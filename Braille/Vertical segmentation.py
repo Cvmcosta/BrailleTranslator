@@ -17,6 +17,7 @@ while(True):
             break
     
     img=cv2.imread('horizontal/part'+str(part)+'.jpg', 0)
+    ret, img = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
 
     rows,cols = img.shape
 
@@ -37,13 +38,15 @@ while(True):
                          if(i+k >= cols): 
                                  break
                          for j in range(rows):
-                                 aux[j,k] = img[j,i+k]
+                                 if(img[j,i+k] == 255):
+                                        aux[j,k] = img[j,i+k]
 
                 if(correction == correction_rate):
                         correction = 0
                         i = i - 3
                 else:
-                        correction = correction + 1  
+                        correction = correction + 1
+                
                 cv2.imwrite("chars/char"+str(char)+".jpg", aux)
                 char = char + 1
                 i = i+mask
