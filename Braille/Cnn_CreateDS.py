@@ -9,28 +9,38 @@ from tqdm import tqdm
 
 
 IMG_SIZE_X = 60
-IMG_SIZE_Y = 80
+IMG_SIZE_Y = 60
 
 training_data = []
+test_data = []
 
 
 
-text = "+Estados +Unidos, +Teresa para o convento, +Raimundo morreu de desastre, +Maria ficoupara tia, +Joaquim suicidou-se e +Lili casou com +J. +Pinto +Fernandes que não tinha entrado na história."
 
-categories = "abcdefghijklmnopqrstuvwxyz,- áàéèãóç.+"
+text = "+estados +unidos, +teresa para o convento, +raimundo morreu de desastre, +maria ficoupara tia, +joaquim suicidou-se e +lili casou com +j. +pinto +fernandes que não tinha entrado na história.     "
+
+categories = "abcdefghijklmnopqrstuvwxyz,- ãáéó.+"
 categories = list(categories)
 
 text = text.lower()
 
 chars = list(text)
-print(len(categories))
+
 
 
 def create_training_data():
     i = 0
-   
-    for img in sorted(os.listdir("train")):  #Get images from test folder
-            img_array = cv2.imread(os.path.join("test",img) ,cv2.IMREAD_GRAYSCALE)  # convert to array
+    j = 0
+
+    for img in range(len(os.listdir("train"))):  #Get images from test folder
+            
+            exists = os.path.isfile(os.path.join("train","char"+str(j)+".jpg"))
+            
+            while(not exists):
+                j+=1
+                exists = os.path.isfile(os.path.join("train","char"+str(j)+".jpg"))
+
+            img_array = cv2.imread(os.path.join("train","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  # convert to array
             new_array = cv2.resize(img_array, (IMG_SIZE_X, IMG_SIZE_Y))
            
             
@@ -42,14 +52,39 @@ def create_training_data():
             plt.show() """
             
             i = i+1
+            j = j+1
+
+def create_test_data():
+    i = 0
+    j = 0
+
+    for img in range(len(os.listdir("test"))):  #Get images from test folder
             
+            exists = os.path.isfile(os.path.join("test","char"+str(j)+".jpg"))
+            
+            while(not exists):
+                j+=1
+                exists = os.path.isfile(os.path.join("test","char"+str(j)+".jpg"))
+
+            img_array = cv2.imread(os.path.join("test","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  # convert to array
+            new_array = cv2.resize(img_array, (IMG_SIZE_X, IMG_SIZE_Y))
+           
+            
+
+            test_data.append(new_array)
+
+            #Mostra a imagem
+            """ plt.imshow(new_array, cmap='gray')
+            plt.show() """
+            
+            i = i+1
+            j = j+1
 
 
 
 
 create_training_data()
-#Embaralha os dados
-random.shuffle(training_data)
+create_test_data()
 
 
 x = []
@@ -59,7 +94,6 @@ for features,label in training_data:
     x.append(features)
     y.append(label)
 
-print(x[0].reshape(-1, IMG_SIZE_X, IMG_SIZE_Y, 1))
 
 x = np.array(x).reshape(-1, IMG_SIZE_X, IMG_SIZE_Y, 1)
 
@@ -73,10 +107,16 @@ pickle_out.close()
 
 
 
-   
-""" model = Sequential()
-model.add(Dense(10, input_shape=(nFeatures,)))
-model.add(Activation('linear'))
-model.compile(optimizer='rmsprop', loss='mse', metrics=['mse', 'mae'])
+x_test = []
 
-model.fit(trainFeatures, trainLabels, batch_size=4, epochs = 100) """
+for features in test_data:
+    x_test.append(features)
+
+
+
+x_test = np.array(x_test).reshape(-1, IMG_SIZE_X, IMG_SIZE_Y, 1)
+
+pickle_out_test = open("X_test.pickle","wb")
+pickle.dump(x_test, pickle_out_test)
+pickle_out_test.close()
+

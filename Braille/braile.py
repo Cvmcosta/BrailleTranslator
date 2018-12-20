@@ -81,7 +81,7 @@ def show_img(img, name):
         
 
 
-filename = "../newDS/3.jpg"
+filename = "../newDS/1.jpg"
 roi = cv2.imread(filename) 
 
 
