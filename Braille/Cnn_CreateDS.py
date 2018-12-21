@@ -32,7 +32,7 @@ def create_training_data():
     i = 0
     j = 0
 
-    for img in range(len(os.listdir("train"))):  #Get images from test folder
+    for img in range(len(os.listdir("train"))):  
             
             exists = os.path.isfile(os.path.join("train","char"+str(j)+".jpg"))
             
@@ -40,7 +40,7 @@ def create_training_data():
                 j+=1
                 exists = os.path.isfile(os.path.join("train","char"+str(j)+".jpg"))
 
-            img_array = cv2.imread(os.path.join("train","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  # convert to array
+            img_array = cv2.imread(os.path.join("train","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  
             new_array = cv2.resize(img_array, (IMG_SIZE_X, IMG_SIZE_Y))
            
             
@@ -58,7 +58,7 @@ def create_test_data():
     i = 0
     j = 0
 
-    for img in range(len(os.listdir("test"))):  #Get images from test folder
+    for img in range(len(os.listdir("test"))):  
             
             exists = os.path.isfile(os.path.join("test","char"+str(j)+".jpg"))
             
@@ -66,7 +66,7 @@ def create_test_data():
                 j+=1
                 exists = os.path.isfile(os.path.join("test","char"+str(j)+".jpg"))
 
-            img_array = cv2.imread(os.path.join("test","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  # convert to array
+            img_array = cv2.imread(os.path.join("test","char"+str(j)+".jpg") ,cv2.IMREAD_GRAYSCALE)  
             new_array = cv2.resize(img_array, (IMG_SIZE_X, IMG_SIZE_Y))
            
             

@@ -34,7 +34,7 @@ sorted_m=sorted(m, key=lambda x: x[0][1])
 
 
 sorted_m.insert(0,((0,0),(c,0)))
-#drawing line
+
 for i in range (0,len(sorted_m)):
     cv2.line(th2,sorted_m[i][0],sorted_m[i][1],(0,0,255),3)
     
